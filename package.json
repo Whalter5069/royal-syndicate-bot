@@ -1,5 +1,5 @@
 {
-  "name": "cmf-welcome-bot",
+  "name": "Royal_Syndicate-bot",
   "version": "1.0.0",
   "description": "Chronicles Mafia Discord Welcome & Leave Bot with Auto Role",
   "main": "index.js",
@@ -10,6 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5"
-  }
+    "dotenv": "^16.6.1",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "type": "commonjs"
 }
