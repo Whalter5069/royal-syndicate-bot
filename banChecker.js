@@ -76,6 +76,7 @@ async function banChecker(client) {
               { name: "🔨 **Action By**", value: "**System (Auto-Unban)**" },
               { name: "📌 **Message**", value: randomMsg }
             )
+            .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
             .setFooter({ 
               text: "ROYAL SYNDICATE Moderation Logs", 
               iconURL: client.user.displayAvatarURL() 
