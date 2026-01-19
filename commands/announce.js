@@ -78,6 +78,7 @@ module.exports = {
                     .setColor("#ffcc00")
                     .setTitle("📢 Announcement")
                     .setDescription(message.slice(0, 4096)) // prevent crash
+                    .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
                     .setFooter({
                         text: "👑 ROYAL SYNDICATE Family",
                         iconURL: interaction.client.user.displayAvatarURL()

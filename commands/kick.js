@@ -56,6 +56,7 @@ module.exports = {
                     { name: "📅 **Date**", value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false }
                 )
                 .setThumbnail(user.displayAvatarURL({ dynamic: true }))
+                .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
                 .setFooter({ 
         text: "👑Royal Syndicate Management", 
         iconURL: interaction.client.user.displayAvatarURL() // bot profile pic

@@ -96,14 +96,16 @@ module.exports = {
 
       // 🎨 Embed
      const embed = new EmbedBuilder()
-    .setColor("Gold")
-    .setTitle(`📜 Situation Report — ${heistName}`)
-    .setDescription(description)
-    .setFooter({ 
-        text: "👑Royal Syndicate Management", 
-        iconURL: interaction.client.user.displayAvatarURL() // bot profile pic
-    })
-    .setTimestamp();
+  .setColor("Gold")
+  .setTitle(`📜 Situation Report — ${heistName}`)
+  .setDescription(description)
+  .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
+  .setFooter({ 
+    text: "👑Royal Syndicate Management", 
+    iconURL: interaction.client.user.displayAvatarURL()
+  })
+  .setTimestamp();
+
 
 
       // 📢 Send to situation-log channel (with mention if provided)
