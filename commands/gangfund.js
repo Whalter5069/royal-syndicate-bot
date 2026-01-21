@@ -201,6 +201,21 @@ module.exports = {
         const data = load();
         const sub = interaction.options.getSubcommand();
 
+
+          // ✅ Allowed role check from .env
+        if (!process.env.ALLOWED_GANGFUND_ROLE) return interaction.reply({
+            content: "⚠️ Server is not configured with allowed Gangfund roles.",
+            ephemeral: true
+        });
+
+        const ALLOWED_ROLE = process.env.ALLOWED_GANGFUND_ROLE.split(",");
+        if (!interaction.member.roles.cache.some(r => ALLOWED_ROLE.includes(r.id))) {
+            return interaction.reply({
+                content: "❌ You don't have permission to use this commands.",
+                ephemeral: true
+            });
+        }
+
         if (sub === "chart") {
             await sendOrUpdateChart(interaction.client);
             return interaction.reply({ content: "📊 Chart updated", ephemeral: true });

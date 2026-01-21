@@ -29,10 +29,27 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    // ✅ Allowed roles from env
+    if (!process.env.ALLOWED_LOA_ROLE) return interaction.reply({
+      content: "⚠️ Server is not configured with allowed LOA roles.",
+      ephemeral: true
+    });
+
+    const ALLOWED_LOA_ROLE = process.env.ALLOWED_LOA_ROLE.split(","); // Array of IDs
+
+    // Check if member has any allowed roles
+    if (!interaction.member.roles.cache.some(r => ALLOWED_LOA_ROLE.includes(r.id))) {
+      return interaction.reply({
+        content: "❌ You don't have permission to use this command.",
+        ephemeral: true
+      });
+    }
+
     const length = interaction.options.getInteger("length");
     const durationType = interaction.options.getString("duration");
     const reason = interaction.options.getString("reason");
 
+    // Calculate end date
     const endDate = new Date();
     if (durationType === "minutes") endDate.setMinutes(endDate.getMinutes() + length);
     if (durationType === "hours") endDate.setHours(endDate.getHours() + length);
@@ -77,27 +94,40 @@ module.exports = {
         .setStyle(ButtonStyle.Danger)
     );
 
+    // ======================
+    // Send to LOA channel
+    // ======================
+    if (!process.env.FIXED_LOA_CHANNEL_ID) return interaction.editReply({
+      content: "⚠️ LOA channel is not configured in the .env file.",
+      ephemeral: true
+    });
+
     const loaChannel = await interaction.guild.channels.fetch(process.env.FIXED_LOA_CHANNEL_ID).catch(() => null);
     if (loaChannel) {
       await loaChannel.send({ embeds: [loaEmbed], components: [row] });
     }
 
-    const logChannel = await interaction.guild.channels.fetch(process.env.LOG_CHANNEL_ID).catch(() => null);
-    if (logChannel) {
-      logChannel.send({
-        embeds: [
-          new EmbedBuilder()
-            .setColor("Yellow")
-            .setTitle("📋 LOA REQUEST LOGGED")
-            .setDescription(`${interaction.user.tag} submitted LOA request.`)
-            .addFields(
-              { name: "Duration", value: `${length} ${durationType}`, inline: true },
-              { name: "Ends (BD)", value: bdTime, inline: true },
-              { name: "Reason", value: reason, inline: false }
-            )
-            .setTimestamp()
-        ]
-      });
+    // ======================
+    // Send to log channel
+    // ======================
+    if (process.env.LOG_CHANNEL_ID) {
+      const logChannel = await interaction.guild.channels.fetch(process.env.LOG_CHANNEL_ID).catch(() => null);
+      if (logChannel) {
+        logChannel.send({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Yellow")
+              .setTitle("📋 LOA REQUEST LOGGED")
+              .setDescription(`${interaction.user.tag} submitted LOA request.`)
+              .addFields(
+                { name: "Duration", value: `${length} ${durationType}`, inline: true },
+                { name: "Ends (BD)", value: bdTime, inline: true },
+                { name: "Reason", value: reason, inline: false }
+              )
+              .setTimestamp()
+          ]
+        });
+      }
     }
 
     // ======================
@@ -110,8 +140,8 @@ module.exports = {
       end: endDate.getTime(),
       reason,
       status: "pending",
-      duration: `${length} ${durationType}`,   // ✅ ADD duration
-      endTime: bdTime                          // ✅ ADD endTime
+      duration: `${length} ${durationType}`,
+      endTime: bdTime
     };
     fs.writeFileSync(LOA_FILE, JSON.stringify(loas, null, 2));
 

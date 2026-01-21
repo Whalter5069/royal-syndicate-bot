@@ -23,6 +23,21 @@ module.exports = {
       const target = interaction.options.getUser("user"); // Member you interacted with
       const details = interaction.options.getString("details");
 
+  // ✅ Allowed role check from .env
+        if (!process.env.ALLOWED_INTERACTION_ROLE) return interaction.reply({
+            content: "⚠️ Server is not configured with allowed interaction roles.",
+            ephemeral: true
+        });
+
+        const ALLOWED_ROLE = process.env.ALLOWED_INTERACTION_ROLE.split(",");
+        if (!interaction.member.roles.cache.some(r => ALLOWED_ROLE.includes(r.id))) {
+            return interaction.reply({
+                content: "❌ You don't have permission to use this commands.",
+                ephemeral: true
+            });
+        }
+
+
       await interaction.reply({ 
         content: `⏳ Logging interaction with **${target.tag}**...`, 
         ephemeral: true 
