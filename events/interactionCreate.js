@@ -87,6 +87,7 @@ module.exports = async (interaction, client) => {
           { name: "⏳ **Requested Duration**", value: userLoa.duration || "N/A", inline: true },
           { name: "📅 **End Time (BD)**", value: userLoa.endTime || "N/A", inline: true }
         )
+        .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
         .setFooter({
           text: "⚔️ ROYAL SYNDICATE •",
           iconURL: client.user.displayAvatarURL()
@@ -131,6 +132,7 @@ module.exports = async (interaction, client) => {
         .addFields(
           { name: "📝 **Reason Provided**", value: loas[userId]?.reason || "N/A", inline: false }
         )
+        .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
         .setFooter({
           text: "⚔️ ROYAL SYNDICATE • ",
           iconURL: client.user.displayAvatarURL()
@@ -148,6 +150,7 @@ module.exports = async (interaction, client) => {
               .setColor("Red")
               .setTitle("❌ **Your LOA Request Rejected!**")
               .setDescription("⚠️ Your **LOA request** has been **rejected**. Please contact staff.")
+              .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
               .setFooter({ text: "⚔️ Royal Syndicate • ", iconURL: client.user.displayAvatarURL() })
               .setTimestamp()
           ]
