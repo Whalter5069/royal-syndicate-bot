@@ -13,7 +13,7 @@ const roles = {
   khomota: "958217460039970883"
 };
 
-/* ================= RANK ROLE MAP ================= */
+/* ================= RANK ROLE ID ================= */
 const roleToRankMap = {
   "1466709519852634273": "recruit",
   "1466709292689264752": "firstDivision",
@@ -27,24 +27,6 @@ const roleToRankMap = {
 /* ================= FILE PATH ================= */
 const dataFolder = path.join(__dirname, "..", "data");
 const jsonPath = path.join(dataFolder, "royalGang.json");
-
-/* ================= PROMO MESSAGES ================= */
-const promotionMessages = [
-  "🎉 Congratulations on your well-deserved promotion!",
-  "⚔️ The Royal Syndicate grows stronger with your promotion.",
-  "🔥 Another warrior rises higher on the battlefield.",
-  "👑 Your promotion is a victory for the whole Syndicate."
-];
-
-/* ================= DEMO MESSAGES ================= */
-const demotionMessages = [
-  "⚠️ Due to internal decision, rank has been adjusted.",
-  "📉 Discipline is the path to strength.",
-  "🛑 Rank updated by High Command order.",
-  "🔻 Demoted after performance review."
-];
-
-
 
 /* ================= JSON FUNCTIONS ================= */
 function ensureJSON() {
@@ -80,9 +62,14 @@ function removeFromPreviousRank(userId, gang) {
   }
 }
 
-/* ================= EMOJI ================= */
+function getTotalMembers(gang) {
+  return Object.values(gang).reduce((total, arr) => total + arr.length, 0);
+}
+
+
+/* ================= EMOJI With Id ================= */
 const emoji = {
- arrow: "<a:arrowred1:1466834714571571438>",
+  arrow: "<a:arrowred1:1466834714571571438>",
   alert1: "<a:alert1:1461251547626340374>",
   redcrownfire: "<a:redcrownfire:1466837802497868053>",
   pinkquartz: "<a:pinkquartz:1466683409341616200>",
@@ -91,16 +78,54 @@ const emoji = {
   teammythril: "<a:teammythril:1466837352704905491>",
   worldcollector: "<a:worldcollector:1466749137188950138>",
   recruitrank: "<a:recruitrank:1466748293513084971>",
- divider2: "<a:divider2:1466849401896042598>",
-divider1: "<a:divider1:1466849437979770973>",
-  bluesiren: "<a:bluesiren:1461260430356905984>"
+  divider2: "<a:divider2:1466849401896042598>",
+  divider1: "<a:divider1:1466849437979770973>",
+  bluesiren: "<a:bluesiren:1461260430356905984>",
+  bluesiren: "<a:bluesiren:1461260430356905984>",
+  rankup: "<a:rankup:1467134439770296331>",
+  rankdown: "<a:rankdown:1467135249199796224>",
+  Rainbow: "<a:divider1:1461262974315663447>"
 };
 
+
+/* ================= PROMO MESSAGES ================= */
+const promotionMessages = [
+  `${emoji.alert1} Congratulations on your well-deserved promotion!`,
+  `${emoji.diablo} The Royal Syndicate grows stronger with your promotion.`,
+  `${emoji.redcrownfire} Another warrior rises higher on the battlefield.`,
+  `${emoji.pinkquartz} Congratulations on your well-deserved promotion!`,
+  `${emoji.teammythril} A new rank, a new responsibility — wear it with pride!`,
+  `${emoji.flashingskull} Your hard work has finally paid off, salute to you!`,
+  `${emoji.recruitrank} Respect the rank, lead with honor — congrats soldier!`,
+  `${emoji.worldcollector} Your dedication has earned you this new title.`,
+  `${emoji.bluesiren} Promoted and powered up — the city better be ready!`,
+  `${emoji.alert1} With great rank comes greater responsibility — good luck!`,
+  `${emoji.redcrownfire} Your promotion is a victory for the whole Syndicate.`
+];
+
+/* ================= DEMOTION MESSAGES ================= */
+const demotionMessages = [
+  `${emoji.alert1} Due to internal decision, rank has been adjusted.`,
+  `${emoji.flashingskull} Discipline is the path to strength.`,
+  `${emoji.bluesiren} Rank updated by High Command order.`,
+  `${emoji.pinkquartz} A step down, but not the end of the journey.`,
+  `${emoji.teammythril} With great power comes great responsibility — and lessons to learn.`,
+  `${emoji.redcrownfire} The Syndicate expects growth from every setback.`,
+  `${emoji.worldcollector} Demotions are tough, but they build stronger leaders.`,
+  `${emoji.diablo} Loyalty and discipline are the true marks of a soldier.`,
+  `${emoji.alert1} Sometimes you step back, only to rise stronger.`,
+  `${emoji.recruitrank} Respect is earned, and roles must reflect actions.`,
+  `${emoji.pinkquartz} Every fall is an opportunity to rise again.`,
+  `${emoji.teammythril} Discipline is key in the Royal Syndicate.`,
+  `${emoji.redcrownfire} This demotion is a reminder, not a defeat.`,
+  `${emoji.alert1} Demoted after performance review.`
+];
 
 
 
 /* ================= MEMBER CHART ================= */
 function formatGangEmbed(gang, client) {
+  const totalMembers = getTotalMembers(gang);
   const format = arr =>
     arr.length
       ? arr.map(id => `${emoji.arrow} <@${id}>`).join("\n")
@@ -132,12 +157,13 @@ ${format(gang.firstDivision)}
 ${emoji.recruitrank} **Recruit**
 ${format(gang.recruit)}
 
+${emoji.bluesiren} **Total Members:** **${totalMembers}**
 ${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}${emoji.divider2}
 <@&${roles.gangAccess}>   <@&${roles.khomota}>
 `)
     .setImage("https://cdn.discordapp.com/attachments/1328281349471342593/1466672070573162567/IMG_3279.png?ex=697d984f&is=697c46cf&hm=171274c2228b51ef88c5d0713187b3dbadc8b821e45fe57f713adc64b260f1ad")
     .setFooter({
-      text: "👑Royal Syndicate Management",
+      text: "Royal Syndicate Management",
       iconURL: client.user.displayAvatarURL()
     });
 }
@@ -216,16 +242,16 @@ module.exports = {
     promotionMessages[Math.floor(Math.random() * promotionMessages.length)];
 
   const promoEmbed = new EmbedBuilder()
-    .setColor("Gold")
+    .setColor("Green")
     .setTitle("🏅 Promotion Announcement")
     .setDescription(
-      `👑 **${user}** has been promoted!\n\n` +
-      `📈 **New Rank:** ${newRole}\n\n` +
-      `✨ ${finalMessage}`
+      `${emoji.redcrownfire} **${user}** has been promoted!\n\n` +
+      `${emoji.rankup} **New Rank:** ${newRole}\n\n` +
+      `${finalMessage}`
     )
     .setThumbnail(user.displayAvatarURL({ dynamic: true }))
     .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
-    .setFooter({ text: "⚔️ Royal Syndicate •", iconURL: interaction.client.user.displayAvatarURL() })
+    .setFooter({ text: "Royal Syndicate Management", iconURL: interaction.client.user.displayAvatarURL() })
 
   const promoCh = await interaction.guild.channels
     .fetch(process.env.PROMOTION_CHANNEL_ID)
@@ -262,13 +288,13 @@ if (action === "demotion") {
     .setColor("Red")
     .setTitle("⚠️ Demotion Notice")
     .setDescription(
-      `⚔️ **${user}** has been demoted.\n\n` +
-      `📉 **New Rank:** ${newRole}\n\n` +
-      `⚠️ ${finalMessage}`
+      `${emoji.redcrownfire} **${user}** has been demoted.\n\n` +
+      `${emoji.rankdown} **New Rank:** ${newRole}\n\n` +
+      `${finalMessage}`
     )
     .setThumbnail(user.displayAvatarURL({ dynamic: true }))
     .setImage("https://media.discordapp.net/attachments/1328281349471342593/1461291979408412841/standard_4.gif")
-    .setFooter({ text: "⚔️ Royal Syndicate •", iconURL: interaction.client.user.displayAvatarURL() })
+    .setFooter({ text: "Royal Syndicate Management", iconURL: interaction.client.user.displayAvatarURL() })
 
   const promoCh = await interaction.guild.channels
     .fetch(process.env.DEMOTION_CHANNEL_ID)
@@ -346,5 +372,3 @@ if (action === "reset") {
 
   
 };
-
-
